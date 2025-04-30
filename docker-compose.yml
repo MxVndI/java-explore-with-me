@@ -18,6 +18,11 @@ services:
         condition: service_healthy
     networks:
       - app-net
+    healthcheck: # Добавлен healthcheck для stats-server
+      test: ["CMD-SHELL", "curl -f http://localhost:9090/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   stats-db:
     image: postgres:13.7-alpine
@@ -52,9 +57,10 @@ services:
       main-db:
         condition: service_healthy
       stats-server:
-        condition: service_started
+        condition: service_healthy # Используем healthcheck вместо started
     networks:
       - app-net
+    command: ["sh", "-c", "./wait-for-it.sh stats-server:9090 --timeout=120 --strict -- java -jar /app.jar"] # Исправлен адрес
 
   main-db:
     image: postgres:13.7-alpine
