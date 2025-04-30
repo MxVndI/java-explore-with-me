@@ -1,28 +1,32 @@
-version: '3.1'
+version: '3.8'
+
 services:
-  server:
+  stats-server:
     build: stat-service/server
-    image: server
-    container_name: server
+    image: stats-server
+    container_name: stats-server
     ports:
       - "9090:9090"
-      - "9091:9091"
-    depends_on:
-      - statdb
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://statdb:5432/statdb
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/stats
       - SPRING_DATASOURCE_USERNAME=Vovs
       - SPRING_DATASOURCE_PASSWORD=123
+    depends_on:
+      - stats-db
+    networks:
+      - app-net
 
-  statdb:
+  stats-db:
     image: postgres:13.7-alpine
-    container_name: statdb
-    ports:
-      - "5432:5432"
+    container_name: stats-db
     environment:
-      - POSTGRES_PASSWORD=Vovs
-      - POSTGRES_USER=123
-      - POSTGRES_DB=statdb
+      POSTGRES_DB: stats
+      POSTGRES_USER: Vovs
+      POSTGRES_PASSWORD: 123
+    ports:
+      - "5433:5432"  # Изменён порт во избежание конфликтов
+    networks:
+      - app-net
 
   main-service:
     build: main-service
@@ -30,21 +34,29 @@ services:
     container_name: main-service
     ports:
       - "8080:8080"
-    depends_on:
-      - main-db
-      - server
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://main-db:5432/main-db
-      - SPRING_DATASOURCE_USERNAME=Vovs
-      - SPRING_DATASOURCE_PASSWORD=123
-      - STATS_SERVER_URL=http://server:9090
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://main-db:5432/main
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - STATS_SERVER_URL=http://stats-server:9090  # Исправлено имя сервиса
+    depends_on:
+      - stats-db
+      - stats-server
+    networks:
+      - app-net
 
   main-db:
     image: postgres:13.7-alpine
     container_name: main-db
+    environment:
+      POSTGRES_DB: main
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
       - "6542:5432"
-    environment:
-      - POSTGRES_PASSWORD=Vovs
-      - POSTGRES_USER=123
-      - POSTGRES_DB=main-db
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: bridge
