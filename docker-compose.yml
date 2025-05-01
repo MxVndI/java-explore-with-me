@@ -46,7 +46,7 @@ services:
       - stats-server
     networks:
       - app-net
-    command: [ "sh", "-c", "./wait-for-it.sh stats-server:9090 --timeout=180 --strict -- java -jar /app.jar" ]
+    command: ["sh", "-c", "./wait-for-it.sh stats-server:9090 --timeout=180 --strict -- java -jar /app.jar"]
 
   main-db:
     image: postgres:13.7-alpine
