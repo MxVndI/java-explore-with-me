@@ -36,16 +36,17 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://main-db:5432/main
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_PROFILES_ACTIVE=default  # Явная активация профиля
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://main-db:5432/main-db  # Внутри сети контейнеров
+      - SPRING_DATASOURCE_USERNAME=Vovs
+      - SPRING_DATASOURCE_PASSWORD=123
       - STATS_SERVER_URL=http://stats-server:9090
     depends_on:
       - main-db
       - stats-server
     networks:
       - app-net
-    command: ["sh", "-c", "./wait-for-it.sh stats-server:9090 --timeout=180 --strict -- java -jar /app.jar"]
+    command: [ "sh", "-c", "./wait-for-it.sh stats-server:9090 --timeout=180 --strict -- java -jar /app.jar" ]
 
   main-db:
     image: postgres:13.7-alpine
