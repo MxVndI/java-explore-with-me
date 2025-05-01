@@ -1,37 +1,47 @@
 services:
   stats-server:
-    build: stat-service/server
-    image: server
-    container_name: server
+    build: stat-service/server  # Путь к вашему сервису статистики
+    image: server               # Имя образа (как у вас)
+    container_name: server      # Как в вашем исходном файле
     ports:
       - "9090:9090"
       - "9091:9091"
     depends_on:
-      - statdb
+      statdb:
+        condition: service_healthy
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://statdb:5432/statdb
       - SPRING_DATASOURCE_USERNAME=Vovs
       - SPRING_DATASOURCE_PASSWORD=123
 
   statdb:
-    image: postgres:13.7-alpine
+    image: postgres:13.7-alpine  # Версия из вашего исходного файла
     container_name: statdb
     ports:
-      - "5432:5432"
+      - "5432:5432"             # Порт как у вас было
+    volumes:
+      - statdb_data:/var/lib/postgresql/data/
     environment:
       - POSTGRES_PASSWORD=123
       - POSTGRES_USER=Vovs
       - POSTGRES_DB=statdb
+    healthcheck:
+      test: pg_isready -U "Vovs" -d "statdb"
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   main-service:
-    build: main-service
+    build: main-service         # Путь к вашему основному сервису
     image: main-service
     container_name: main-service
     ports:
       - "8080:8080"
     depends_on:
-      - main-db
-      - stats-server
+      main-db:
+        condition: service_healthy
+      stats-server:
+        condition: service_started
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://main-db:5432/main-db
       - SPRING_DATASOURCE_USERNAME=Vovs
@@ -42,8 +52,19 @@ services:
     image: postgres:13.7-alpine
     container_name: main-db
     ports:
-      - "6542:5432"
+      - "6542:5432"            # Порт как у вас было
+    volumes:
+      - maindb_data:/var/lib/postgresql/data/
     environment:
       - POSTGRES_PASSWORD=123
       - POSTGRES_USER=Vovs
       - POSTGRES_DB=main-db
+    healthcheck:
+      test: pg_isready -U "Vovs" -d "main-db"
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  statdb_data:
+  maindb_data:
