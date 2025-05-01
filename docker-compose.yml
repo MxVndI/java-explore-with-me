@@ -1,4 +1,3 @@
-version: '3.1'
 services:
   server:
     build: stat-service/server
@@ -45,6 +44,6 @@ services:
     ports:
       - "6542:5432"
     environment:
-      - POSTGRES_PASSWORD=ewm
-      - POSTGRES_USER=ewm
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_USER=Vovs
       - POSTGRES_DB=main-db
