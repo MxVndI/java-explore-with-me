@@ -6,8 +6,9 @@ services:
     image: stats-server
     container_name: stats-server
     ports:
-      - "9090:9090"
+      - "9090:9090"  # Порт для доступа с хоста
     environment:
+      - SPRING_PROFILES_ACTIVE=default  # Явно указываем профиль
       - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/stats
       - SPRING_DATASOURCE_USERNAME=Vovs
       - SPRING_DATASOURCE_PASSWORD=123
@@ -24,7 +25,7 @@ services:
       POSTGRES_USER: Vovs
       POSTGRES_PASSWORD: 123
     ports:
-      - "5433:5432"
+      - "5433:5432"  # Порт для доступа к БД с хоста
     networks:
       - app-net
 
@@ -36,17 +37,17 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=default  # Явная активация профиля
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://main-db:5432/main-db  # Внутри сети контейнеров
-      - SPRING_DATASOURCE_USERNAME=Vovs
-      - SPRING_DATASOURCE_PASSWORD=123
-      - STATS_SERVER_URL=http://stats-server:9090
+      - SPRING_PROFILES_ACTIVE=default
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://main-db:5432/main-db
+      - SPRING_DATASOURCE_USERNAME=postgres  # Исправлено на корректного пользователя
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - STATS_SERVER_URL=http://stats-server:9090  # Используем имя контейнера
     depends_on:
       - main-db
-      - stats-server
+      - stats-server  # Явная зависимость
     networks:
       - app-net
-    command: ["sh", "-c", "./wait-for-it.sh stats-server:9090 --timeout=180 --strict -- java -jar /app.jar"]
+    command: ["sh", "-c", "./wait-for-it.sh stats-server:9090 --timeout=300 --strict -- java -jar /app.jar"]
 
   main-db:
     image: postgres:13.7-alpine
@@ -56,7 +57,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - "6542:5432"
+      - "6542:5432"  # Порт для доступа к БД с хоста
     networks:
       - app-net
 
