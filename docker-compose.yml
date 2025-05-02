@@ -52,7 +52,7 @@ services:
     image: postgres:13.7-alpine
     container_name: main-db
     ports:
-      - "6542:5432"            # Порт как у вас было
+      - "6542:5432"
     volumes:
       - maindb_data:/var/lib/postgresql/data/
     environment:
