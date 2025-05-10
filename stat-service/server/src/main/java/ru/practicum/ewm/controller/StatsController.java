@@ -35,6 +35,11 @@ public class StatsController {
                                     @RequestParam(required = false) List<String> uris,
                                     @RequestParam(defaultValue = "false") boolean unique) {
         log.info("GET request to get all statistic.");
+
+        if (start.isAfter(end)) {
+            throw new IllegalArgumentException("Дата начала диапазона должна быть раньше даты конца.");
+        }
+
         if (uris == null) {
             uris = Collections.emptyList();
         }
