@@ -26,6 +26,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             "GROUP BY c.event.id")
     List<CountCommentsByEventDto> countCommentByEvent(List<Long> eventIds);
 
-    @Query("SELECT c FROM Comment c WHERE LOWER(c.text) LIKE LOWER(:text)")
+    @Query("SELECT c FROM comments c WHERE LOWER(c.text) LIKE LOWER(:text)")
     List<Comment> search(@Param("text") String text, Pageable pageable);
 }
