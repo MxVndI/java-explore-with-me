@@ -152,7 +152,8 @@ public class CommentServiceImpl implements CommentService {
         if (text.isBlank()) {
             return Collections.emptyList();
         }
-        return commentRepository.search(text, pageable);
+        // Используем ILIKE для регистронезависимости (Hibernate)
+        return commentRepository.search("%" + text.toLowerCase() + "%", pageable);
     }
 
     /**

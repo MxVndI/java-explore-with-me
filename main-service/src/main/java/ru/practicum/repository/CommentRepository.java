@@ -3,6 +3,7 @@ package ru.practicum.repository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import ru.practicum.dto.comment.CountCommentsByEventDto;
 import ru.practicum.model.Comment;
 
@@ -25,8 +26,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             "GROUP BY c.event.id")
     List<CountCommentsByEventDto> countCommentByEvent(List<Long> eventIds);
 
-    @Query("select c " +
-            "from comments as c " +
-            "where lower(c.text) like lower(concat('%', ?1, '%') )")
-    List<Comment> search(String text, Pageable pageable);
+    @Query("SELECT c FROM Comment c WHERE LOWER(c.text) LIKE LOWER(:text)")
+    List<Comment> search(@Param("text") String text, Pageable pageable);
 }
