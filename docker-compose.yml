@@ -46,13 +46,13 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://main-db:5432/main-db
       - SPRING_DATASOURCE_USERNAME=Vovs
       - SPRING_DATASOURCE_PASSWORD=123
-      - STATS_SERVER_URL=http://server:9090
+      - STATS_SERVER_URL=http://stats-server:9090
 
   main-db:
     image: postgres:13.7-alpine
     container_name: main-db
     ports:
-      - "6542:5432"            # Порт как у вас было
+      - "6542:5432"
     volumes:
       - maindb_data:/var/lib/postgresql/data/
     environment:
