@@ -1,11 +1,14 @@
 package ru.practicum.service;
 
-import jakarta.servlet.http.HttpServletRequest;
 import ru.practicum.dto.event.*;
 import ru.practicum.dto.request.*;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 
+/**
+ * Интерфейс EventService, определяющий методы для работы с событиями
+ */
 public interface EventService {
 
     List<EventFullDto> getAllEventFromAdmin(SearchEventParamsAdmin searchEventParamsAdmin);
