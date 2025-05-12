@@ -699,10 +699,9 @@
                       "value": "horror"
                     }
                   ]
-                }
+                },
+                "response": []
               },
-              "response": []
-            },
             {
               "name": "Удаление комментария",
               "event": [
@@ -844,71 +843,6 @@
                     {
                       "key": "userId",
                       "value": "3"
-                    },
-                    {
-                      "key": "eventId",
-                      "value": "1"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Добавление комментария неопубликованному событию",
-              "event": [
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": [
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                },
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"Ответ должен содержать код статуса 400 и данные в формате json\", function () {\r",
-                      "    pm.response.to.have.status(400);   \r",
-                      "    pm.response.to.be.withBody;\r",
-                      "    pm.response.to.be.json;\r",
-                      "});\r",
-                      ""
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"text\": \"привет\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/comments/users/:userId/events/:eventId",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "comments",
-                    "users",
-                    ":userId",
-                    "events",
-                    ":eventId"
-                  ],
-                  "variable": [
-                    {
-                      "key": "userId",
-                      "value": "2"
                     },
                     {
                       "key": "eventId",
@@ -1535,66 +1469,6 @@
                 {
                   "key": "eventId",
                   "value": "1"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Добавление жалобы к несуществующему комментарию",
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "exec": [
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            },
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Ответ должен содержать код статуса 404 и данные в формате json\", function () {\r",
-                  "    pm.response.to.have.status(404);   \r",
-                  "    pm.response.to.be.withBody;\r",
-                  "    pm.response.to.be.json;\r",
-                  "});\r",
-                  "\r",
-                  ""
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"reason\":\"rhbfcrhbrh\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/comments/:commentId/report",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "comments",
-                ":commentId",
-                "report"
-              ],
-              "variable": [
-                {
-                  "key": "commentId",
-                  "value": "586"
                 }
               ]
             }
