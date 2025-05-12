@@ -2,7 +2,7 @@ package ru.practicum.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.practicum.dto.ParticipationRequestDto;
+import ru.practicum.dto.request.ParticipationRequestDto;
 import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.exception.UncorrectedParametersException;

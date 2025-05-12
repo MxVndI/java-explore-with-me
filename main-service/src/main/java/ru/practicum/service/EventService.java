@@ -1,8 +1,9 @@
 package ru.practicum.service;
 
-import ru.practicum.dto.*;
-
 import jakarta.servlet.http.HttpServletRequest;
+import ru.practicum.dto.event.*;
+import ru.practicum.dto.request.*;
+
 import java.util.List;
 
 public interface EventService {

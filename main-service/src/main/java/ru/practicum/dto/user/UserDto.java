@@ -1,4 +1,4 @@
-package ru.practicum.dto;
+package ru.practicum.dto.user;
 
 import lombok.*;
 
@@ -7,7 +7,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserShortDto {
+public class UserDto {
     private Long id;
     private String name;
+    private String email;
 }
