@@ -13,7 +13,7 @@ import ru.practicum.exception.UncorrectedParametersException;
 import ru.practicum.model.Comment;
 import ru.practicum.model.Event;
 import ru.practicum.model.User;
-import ru.practicum.model.enums.EventStatus;
+//import ru.practicum.model.enums.EventStatus;
 import ru.practicum.model.mappers.CommentMapper;
 import ru.practicum.repository.CommentRepository;
 import ru.practicum.repository.EventRepository;
