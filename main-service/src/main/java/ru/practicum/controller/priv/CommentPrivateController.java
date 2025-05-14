@@ -62,9 +62,9 @@ public class CommentPrivateController {
      * @return список объектов CommentDto с информацией о комментариях пользователя
      */
     @GetMapping("/users/{userId}/comments")
-    public List<CommentDto> getRequestListUser(@PathVariable Long userId) {
+    public List<CommentDto> getRequestListUser(@PathVariable Long userId, @PathVariable Long eventId) {
         log.info("GET запрос на получение комментариев пользователя с userId = {} ", userId);
-        return commentService.getCommentUser(userId);
+        return commentService.getCommentUser(userId, eventId);
     }
 
     /**

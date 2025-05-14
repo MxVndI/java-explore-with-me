@@ -70,7 +70,7 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<CommentDto> getCommentUser(Long userId) {
+    public List<CommentDto> getCommentUser(Long userId, Long eventId) {
         checkUser(userId);
         List<Comment> commentList = commentRepository.findByAuthor_Id(userId);
         return commentList.stream().map(CommentMapper::toCommentDto).collect(Collectors.toList());

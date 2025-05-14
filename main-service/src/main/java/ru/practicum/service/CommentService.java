@@ -15,7 +15,7 @@ public interface CommentService {
 
     CommentDto patchByUser(Long userId, Long commentId, UpdateCommentDto updateCommentDto);
 
-    List<CommentDto> getCommentUser(Long userId);
+    List<CommentDto> getCommentUser(Long userId, Long eventId);
 
     Comment getUserCommentByUserAndCommentId(Long userId, Long commentId);
 

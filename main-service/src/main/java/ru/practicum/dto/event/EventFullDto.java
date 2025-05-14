@@ -5,9 +5,11 @@ import lombok.*;
 import ru.practicum.dto.category.CategoryDto;
 import ru.practicum.dto.location.LocationDto;
 import ru.practicum.dto.user.UserShortDto;
+import ru.practicum.model.Comment;
 import ru.practicum.model.enums.EventStatus;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,6 +22,7 @@ public class EventFullDto {
     private String annotation;
     private CategoryDto category;
     private Integer confirmedRequests;
+    private List<Comment> comments;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdOn;
