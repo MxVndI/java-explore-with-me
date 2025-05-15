@@ -1,8 +1,7 @@
-package ru.practicum.dto;
+package ru.practicum.dto.category;
 
 import lombok.*;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -11,12 +10,9 @@ import jakarta.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class NewUserRequest {
+public class CategoryDto {
+    private Long id;
     @NotBlank
-    @Email
-    @Size(min = 6, max = 254)
-    private String email;
-    @NotBlank
-    @Size(min = 2, max = 250)
+    @Size(min = 1, max = 50)
     private String name;
 }

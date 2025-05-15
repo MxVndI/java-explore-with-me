@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.dto.EventFullDto;
-import ru.practicum.dto.SearchEventParamsAdmin;
-import ru.practicum.dto.UpdateEventAdminRequest;
+import ru.practicum.dto.event.EventFullDto;
+import ru.practicum.dto.event.SearchEventParamsAdmin;
+import ru.practicum.dto.request.UpdateEventAdminRequest;
 import ru.practicum.service.EventService;
 
 import jakarta.validation.Valid;
