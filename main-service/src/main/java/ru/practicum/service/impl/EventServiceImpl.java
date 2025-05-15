@@ -74,6 +74,7 @@ public class EventServiceImpl implements EventService {
         LocalDateTime rangeEnd = searchEventParamsAdmin.getRangeEnd();
         LocalDateTime rangeStart = searchEventParamsAdmin.getRangeStart();
 
+
         if (users != null && !users.isEmpty()) {
             specification = specification.and((root, query, criteriaBuilder) ->
                     root.get("initiator").get("id").in(users));
@@ -101,8 +102,17 @@ public class EventServiceImpl implements EventService {
 
         Page<Event> events = eventRepository.findAll(specification, pageable);
 
+
+
         List<EventFullDto> result = events.getContent()
                 .stream().map(EventMapper::toEventFullDto).collect(Collectors.toList());
+
+        for (EventFullDto fullDto: result) {
+            List<Comment> comments = commentRepository.findAllByEvent_Id(fullDto.getId(), pageable);
+            for (Comment comment: comments) {
+                fullDto.getComments().add(comment.getId());
+            }
+        }
 
         Map<Long, List<Request>> confirmedRequestsCountMap = getConfirmedRequestsCount(events.toList());
 
@@ -256,7 +266,13 @@ public class EventServiceImpl implements EventService {
     public EventFullDto getEventByUserIdAndEventId(Long userId, Long eventId) {
         checkUser(userId);
         Event event = checkEvenByInitiatorAndEventId(userId, eventId);
-        return EventMapper.toEventFullDto(event);
+        EventFullDto eventFullDto = EventMapper.toEventFullDto(event);
+            List<Comment> comments = commentRepository.findAllByEvent_Id(eventFullDto.getId());
+            for (Comment comment: comments) {
+                eventFullDto.getComments().add(comment.getId());
+            }
+
+        return eventFullDto;
     }
 
     /**
@@ -476,6 +492,10 @@ public class EventServiceImpl implements EventService {
         Map<Long, Long> viewStatsMap = getViewsAllEvents(List.of(event));
         Long views = viewStatsMap.getOrDefault(event.getId(), 0L);
         eventFullDto.setViews(views);
+            List<Comment> comments = commentRepository.findAllByEvent_Id(eventFullDto.getId());
+            for (Comment comment: comments) {
+                eventFullDto.getComments().add(comment.getId());
+            }
         return eventFullDto;
     }
 
